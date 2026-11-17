@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const SideBar = () => {
   const isMenuItem = useSelector((store) => store.sidebar?.isToggle);
@@ -7,7 +8,9 @@ const SideBar = () => {
   return (
     <div className="col-span-1 bg-white shadow-lg p-2 text-xl font-medium">
       <ul>
-        <li>Home</li>
+        <Link to="/">
+          <li>Home</li>{" "}
+        </Link>
         <li>Shorts</li>
         <li>
           Subscription <span>{">"}</span>
