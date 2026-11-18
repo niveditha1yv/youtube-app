@@ -6,7 +6,7 @@ const SideBar = () => {
   if (!isMenuItem) return null;
 
   return (
-    <div className="col-span-1 bg-white shadow-lg p-2 text-xl font-medium">
+    <div className="bg-white shadow-lg p-2 text-md font-medium w-48 shrink-0">
       <ul>
         <Link to="/">
           <li>Home</li>{" "}
@@ -15,7 +15,7 @@ const SideBar = () => {
         <li>
           Subscription <span>{">"}</span>
         </li>
-        <ul className="ml-4 text-lg font-light">
+        <ul className="ml-4 text-md font-light">
           <li>History</li>
           <li>Playlist</li>
           <li>Watch Later</li>
@@ -24,7 +24,7 @@ const SideBar = () => {
         <li>
           You <span>{">"}</span>
         </li>
-        <ul className="ml-4 text-lg font-light">
+        <ul className="ml-4 text-md font-light">
           <li>History</li>
           <li>Playlist</li>
           <li>Watch Later</li>

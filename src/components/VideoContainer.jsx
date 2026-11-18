@@ -9,16 +9,35 @@ const VideoContainer = () => {
   const [videos, setVideos] = useState(null);
   // const dispatch = useDispatch();
   // const videos = useSelector((store) => store.videos?.data);
-  const getVideos = async () => {
-    const data = await fetch(YOUTUBE_API);
-    const json = await data.json();
-    //console.log("json", json);
-    setVideos(json.items);
-    // dispatch(getvideosData(json.items));
-  };
+  // const getVideos = async () => {
+  //   const data = await fetch(YOUTUBE_API);
+  //   const json = await data.json();
+  //   //console.log("json", json);
+  //   setVideos(json.items);
+  //   // dispatch(getvideosData(json.items));
+  // };
+
+  // useEffect(() => {
+  //   getVideos();
+  // }, []);
 
   useEffect(() => {
-    getVideos();
+    let ignore = false;
+
+    async function fetchVideos() {
+      const response = await fetch(YOUTUBE_API); // replace with your actual fetch call
+      const data = await response.json();
+
+      if (!ignore) {
+        setVideos(data.items);
+      }
+    }
+
+    fetchVideos();
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   // if (videos) {
