@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { YOUTUBE_API } from "../Utils/constants";
 import VideoTile from "./VideoTile";
 import { Link } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { videosData } from "../redux/videoSlice";
 //import { getvideosData } from "../redux/videoSlice";
 
 const VideoContainer = () => {
   const [videos, setVideos] = useState(null);
-  // const dispatch = useDispatch();
-  // const videos = useSelector((store) => store.videos?.data);
+  const dispatch = useDispatch();
+  const videoData = useSelector((store) => store.videos.data);
   // const getVideos = async () => {
   //   const data = await fetch(YOUTUBE_API);
   //   const json = await data.json();
@@ -29,6 +30,7 @@ const VideoContainer = () => {
       const data = await response.json();
 
       if (!ignore) {
+        dispatch(videosData(data.items));
         setVideos(data.items);
       }
     }
@@ -40,15 +42,13 @@ const VideoContainer = () => {
     };
   }, []);
 
-  // if (videos) {
-  //   console.log("videos", videos);
-  // }
-  // console.log("videos", videos);
+  // console.log("videoData", videoData);
+  console.log("videos", videos);
   return (
     <div className="flex flex-wrap gap-1">
-      {videos?.map((data) => (
-        <Link to={"/watch?v=" + data.id}>
-          <VideoTile key={data.id} info={data} />{" "}
+      {videoData?.map((data) => (
+        <Link key={data.id} to={"/watch?v=" + data.id}>
+          <VideoTile info={data} />{" "}
         </Link>
       ))}
     </div>

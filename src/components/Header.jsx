@@ -11,17 +11,19 @@ const Header = () => {
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
 
-  const fetchSuggestions = async () => {
-    console.log("API CALL", searchQuery);
-    const data = await fetch(SEARCH_API + searchQuery);
-    const json = await data.json();
-
-    //console.log("json", json[1]);
-    setSuggestions(json[1]);
-    dispatch(cachedResults({ [searchQuery]: json[1] }));
-  };
-
   useEffect(() => {
+    if (!searchQuery.trim()) return;
+
+    const fetchSuggestions = async () => {
+      console.log("API CALL", searchQuery);
+      const data = await fetch(SEARCH_API + searchQuery);
+      const json = await data.json();
+
+      //console.log("json", json[1]);
+      setSuggestions(json[1]);
+      dispatch(cachedResults({ [searchQuery]: json[1] }));
+    };
+
     const timer = setTimeout(() => {
       if (searchCache[searchQuery]) {
         setSuggestions(searchCache[searchQuery]);
@@ -33,7 +35,7 @@ const Header = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [searchQuery]);
+  }, [searchQuery, searchCache, dispatch]);
 
   const hadleClick = () => {
     dispatch(toggleSideBar());
@@ -60,7 +62,12 @@ const Header = () => {
           placeholder="Full Name"
           className="w-1/2 p-2 border-2 border-solid rounded-l-full"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            if (!e.target.value.trim()) {
+              setSuggestions([]);
+            }
+          }}
           onFocus={() => setShowSuggestion(true)}
           onBlur={() => setShowSuggestion(false)}
         />
